@@ -63,7 +63,7 @@ plotFileEntity = synStore(plotFileEntity)
 
 #### Add provenance describing how plot was created:
 ```{r}
-plotFileEntity = synStore(plotFileEntity, executed='https://github.com/Sage-Bionetworks/synapseTutorials/blob/master/R/getting_started.Rmd')
+plotFileEntity = synStore(plotFileEntity, executed='https://github.com/kkdang/synapseTutorials/blob/master/R/getting_started.Rmd', activityName="plot distributions", activityDescription="Generate histograms for demo",forceVersion=F)
 ```
 
 #### View project on web:
