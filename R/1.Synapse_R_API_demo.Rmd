@@ -1,6 +1,6 @@
 # Getting started with Synapse using R
 
-Import the synapse R client and log in to Synapse using locally stored credentials.
+*Import the synapse R client and log in to Synapse using locally stored credentials. New users have to supply username and password or their Synapse session API key*
 ```{r}
 library(synapseClient)
 synapseLogin()
@@ -9,22 +9,25 @@ synapseLogin()
 
 #### Create a Synapse Project to store your work:
 ```{r}
-myProject = Project(name = "Demo Synapse Project")
-myProject = synStore(myProject)
+random_string <- paste(sample(LETTERS,4),collapse="")
+proj_name <- paste('Demo Synapse Project',random_string,sep='-')
+myProject <- Project(name=proj_name)
+myProject <- synStore(myProject)
 print(paste('Created a project with Synapse id', myProject$properties$id, sep = ' '))
-```
-
-#### Or, start with an existing project, such as the one created above:
-```{r}
-id = myProject$properties$id
-rm(myProject)
-myProject = synGet(id)
 ```
 
 #### See your project online:
 ```{r}
-onWeb(myProject)
+#onWeb(myProject)
 ```
+
+
+#### Or, start with an existing project, such as the one created above:
+```{r}
+id = myProject$properties$id
+myProject = synGet(id)
+```
+
 
 #### Create a wiki for the project and put some text on it:
 ```{r}
@@ -42,31 +45,44 @@ myFolderEntity = synStore(myFolderEntity)
 
 #### See your project online:
 ```{r}
-onWeb(myProject)
+#onWeb(myProject)
 ```
 
 #### Create and upload a plot to the project:
 ```{r}
 x = rnorm(500,mean=6,sd=4)
 y = rnorm(500,mean=2,sd=3)
-pdf(file="demo_file.pdf")
+png(file="demo_plot.png")
 par(mfrow = c(1,2))
 hist(x, col = "red", xlim = range(-10,15))
 hist(y, col = "blue", xlim = range(-10,15))
 dev.off()
 
-plotFileEntity = File(path="demo_file.pdf", parentId=myFolderEntity$properties$id)
+plotFileEntity = File(path="demo_plot.png", parentId=myFolderEntity$properties$id)
 synSetAnnotations(plotFileEntity) = list(sampleType="iPSC", institution="FredHutch", protocol="A43.6")
 plotFileEntity = synStore(plotFileEntity)
 ```
 
 
+
 #### Add provenance describing how plot was created:
 ```{r}
-plotFileEntity = synStore(plotFileEntity, executed='https://github.com/kkdang/synapseTutorials/blob/master/R/getting_started.Rmd', activityName="plot distributions", activityDescription="Generate histograms for demo",forceVersion=F)
+plotFileEntity = synStore(plotFileEntity, 
+                          executed='https://github.com/Sage-Bionetworks/synapseTutorials/blob/master/R/1.Synapse_R_API_demo.Rmd', 
+                          activityName="plot distributions", 
+                          activityDescription="Generate histograms for demo",forceVersion=F)
 ```
 
 #### View project on web:
 ```{r}
-onWeb(plotFileEntity)
+#onWeb(plotFileEntity)
 ```
+
+#### Upload the full analysis to a Synapse Wiki
+```{r}
+# library(devtools)
+# source_gist("https://gist.github.com/brian-bot/6117476")
+# thisFile <- "~/dev/synapseTutorials/R/1.Synapse_R_API_demo.Rmd"
+# knit2synapse(thisFile, myProject, overwrite = T)
+```
+
