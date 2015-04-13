@@ -24,23 +24,23 @@ print(paste('Created a project with Synapse id', myProject$properties$id, sep = 
 
 #### Or, start with an existing project, such as the one created above:
 ```{r}
-id = myProject$properties$id
-myProject = synGet(id)
+id <- myProject$properties$id
+myProject <- synGet(id)
 ```
 
 
 #### Create a wiki for the project and put some text on it:
 ```{r}
-placeholderText = "Place-holder text: Credibly innovate granular internal or organic sources whereas high standards in web-readiness. Energistically scale future-proof core competencies vis-a-vis impactful experiences. Dramatically synthesize integrated schemas with optimal networks."
-wiki = WikiPage(owner=myProject, title="Analysis summary", markdown=placeholderText)
-wiki = synStore(wiki)
+placeholderText <- "Place-holder text: Credibly innovate granular internal or organic sources whereas high standards in web-readiness. Energistically scale future-proof core competencies vis-a-vis impactful experiences. Dramatically synthesize integrated schemas with optimal networks."
+wiki <- WikiPage(owner=myProject, title="Analysis summary", markdown=placeholderText)
+wiki <- synStore(wiki)
 ```
 
 
 #### Organize the project by creating folders within it:
 ```{r}
-myFolderEntity = Folder(name = "plots", parentId = myProject$properties$id)
-myFolderEntity = synStore(myFolderEntity)
+myFolderEntity <- Folder(name = "plots", parentId = myProject$properties$id)
+myFolderEntity <- synStore(myFolderEntity)
 ```
 
 #### See your project online:
@@ -50,24 +50,24 @@ myFolderEntity = synStore(myFolderEntity)
 
 #### Create and upload a plot to the project:
 ```{r}
-x = rnorm(500,mean=6,sd=4)
-y = rnorm(500,mean=2,sd=3)
+x <- rnorm(500,mean=6,sd=4)
+y <- rnorm(500,mean=2,sd=3)
 png(file="demo_plot.png")
 par(mfrow = c(1,2))
 hist(x, col = "red", xlim = range(-10,15))
 hist(y, col = "blue", xlim = range(-10,15))
 dev.off()
 
-plotFileEntity = File(path="demo_plot.png", parentId=myFolderEntity$properties$id)
-synSetAnnotations(plotFileEntity) = list(sampleType="iPSC", institution="FredHutch", protocol="A43.6")
-plotFileEntity = synStore(plotFileEntity)
+plotFileEntity <- File(path="demo_plot.png", parentId=myFolderEntity$properties$id)
+synSetAnnotations(plotFileEntity) <- list(sampleType="iPSC", institution="FredHutch", protocol="A43.6")
+plotFileEntity <- synStore(plotFileEntity)
 ```
 
 
 
 #### Add provenance describing how plot was created:
 ```{r}
-plotFileEntity = synStore(plotFileEntity, 
+plotFileEntity <- synStore(plotFileEntity, 
                           executed='https://github.com/Sage-Bionetworks/synapseTutorials/blob/master/R/1.Synapse_R_API_demo.Rmd', 
                           activityName="plot distributions", 
                           activityDescription="Generate histograms for demo",forceVersion=F)
